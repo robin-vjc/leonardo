@@ -4,9 +4,8 @@ from typing import Dict
 
 import torch
 import yaml
-from PIL import Image
 from diffusers import StableDiffusionImg2ImgPipeline
-
+from PIL import Image
 
 LOADED_PIPELINES = {}  # we persist pipes for the duration of the application as loading them is expensive
 THIS_PATH = Path(os.path.dirname(os.path.realpath(__file__)))
@@ -25,10 +24,10 @@ def get_pipeline(model_path: str, low_memory: bool = False) -> StableDiffusionIm
 
     pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
         model_path,
-        # torch_dtype=dtype,
+        torch_dtype=dtype,
         use_auth_token=hf_token,
         safety_checker=None,  # sometimes erroneously detects NSFW content when working in low resolution
-        requires_safety_checker=False
+        requires_safety_checker=False,
     )
 
     if low_memory and device == "cuda":

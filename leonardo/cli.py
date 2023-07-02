@@ -4,26 +4,26 @@ from pathlib import Path
 
 import typer
 
-from leonardo.processing import get_config, get_pipeline, load_image, PROJECT_PATH
+from leonardo.processing import PROJECT_PATH, get_config, get_pipeline, load_image
 
 app = typer.Typer()
 
 
 @app.command()
 def process_folder(
-        input_path: Path,
-        output_path: Path,
-        prompt: str,
-        output_width: int = 128,
-        strength: float = 0.2,
-        guidance_scale: float = 1.5,
+    input_path: Path,
+    output_path: Path,
+    prompt: str,
+    output_width: int = 128,
+    strength: float = 0.2,
+    guidance_scale: float = 1.5,
 ):
     images_files = os.listdir(PROJECT_PATH / input_path)
     config = get_config()
 
     for file_name in images_files[:2]:
         # random pipeline
-        model = random.choice(config['models'])
+        model = random.choice(config["models"])
         pipe = get_pipeline(model)
 
         # load image

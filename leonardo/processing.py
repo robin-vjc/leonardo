@@ -47,7 +47,6 @@ def get_config() -> Dict:
 
 
 def load_image(image_path: str, width: int = 512) -> Image:
-    # image_name = "Default_A_side_view_of_a_samurai_cat_with_a_flat_design_Artwork_of_t_0_cc6b0aa7-de9c-4d6e-8d3a-3aebd827b1cd_1.jpg"
     image = Image.open(image_path).convert("RGB")
 
     init_width, init_height = image.size

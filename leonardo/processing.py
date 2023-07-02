@@ -24,8 +24,7 @@ def get_pipeline(model_path: str, low_memory: bool = False) -> StableDiffusionIm
 
     pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
         model_path,
-        revision="fp16",
-        torch_dtype=dtype,
+        # torch_dtype=dtype,
         use_auth_token=hf_token,
         safety_checker=None,  # sometimes erroneously detects NSFW content when working in low resolution
         requires_safety_checker=False
@@ -46,7 +45,7 @@ def get_config() -> Dict:
     return config
 
 
-def load_image(image_path: str, width: int = 512) -> Image:
+def load_image(image_path: Path, width: int = 512) -> Image:
     image = Image.open(image_path).convert("RGB")
 
     init_width, init_height = image.size
@@ -54,7 +53,3 @@ def load_image(image_path: str, width: int = 512) -> Image:
     height = init_height // scaling_factor
 
     return image.resize((width, height))
-
-
-def process_folder(images_path: str):
-    pass

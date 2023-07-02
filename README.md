@@ -19,8 +19,13 @@ nano config.yaml
 
 # Usage
 
+
+# Design decision
+
+- We do not attempt to parallelize the processing of images as the bottleneck (inference) is cpu/gpu bound.
+
 # ToDos
-- [ ] upload repo to git
+- [x] upload repo to git
 - [ ] process image (img_bytes, prompt, output_file)
 - [ ] store images in data/
 - [ ] make repo pip-installable

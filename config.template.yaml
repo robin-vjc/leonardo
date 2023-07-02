@@ -1,5 +1,4 @@
-hf_token:
-  - <INSERT_TOKEN_HERE>
+hf_token: <INSERT_TOKEN_HERE>
 models:
   - runwayml/stable-diffusion-v1-5
   - stabilityai/stable-diffusion-2

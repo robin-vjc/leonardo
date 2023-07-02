@@ -14,8 +14,8 @@ pip install -e .
 
 Update `config.yaml` with the Huggingface token
 ```bash
-cp config.template.yaml config.yaml
-nano config.yaml
+cp leonardo/config/config.template.yaml leonardo/config/config.yaml
+nano leonardo/config/config.yaml
 ```
 
 Run the pipeline on the set of images in `data/images`

@@ -2,4 +2,4 @@
 notebooks/.ipynb_checkpoints
 leonardo.egg-info
 
-config.yaml
+leonardo/config/config.yaml

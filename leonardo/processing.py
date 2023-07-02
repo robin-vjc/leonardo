@@ -40,7 +40,7 @@ def get_pipeline(model_path: str, low_memory: bool = False) -> StableDiffusionIm
 
 
 def get_config() -> Dict:
-    with open(THIS_PATH / ".." / "config.yaml", "r") as config_file:
+    with open(THIS_PATH / "config" / "config.yaml", "r") as config_file:
         config = yaml.safe_load(config_file)
     return config
 

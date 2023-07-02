@@ -4,7 +4,7 @@ from pathlib import Path
 
 import typer
 
-from leonardo.processing import get_config, get_pipeline, load_image
+from leonardo.processing import get_config, get_pipeline, load_image, PROJECT_PATH
 
 app = typer.Typer()
 
@@ -18,7 +18,7 @@ def process_folder(
         strength: float = 0.2,
         guidance_scale: float = 1.5,
 ):
-    images_files = os.listdir(input_path)
+    images_files = os.listdir(PROJECT_PATH / input_path)
     config = get_config()
 
     for file_name in images_files[:2]:
@@ -27,7 +27,7 @@ def process_folder(
         pipe = get_pipeline(model)
 
         # load image
-        image = load_image(image_path=input_path / file_name, width=output_width)
+        image = load_image(image_path=PROJECT_PATH / input_path / file_name, width=output_width)
 
         # perform processing
         output_image = pipe(
@@ -38,7 +38,7 @@ def process_folder(
         ).images[0]
 
         # store result
-        output_image.save(output_path / file_name)
+        output_image.save(PROJECT_PATH / output_path / file_name)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,4 @@
+accelerate==0.20.3
+diffusers["torch"]==0.17.1
+matplotlib==3.7.1
+transformers==4.28.1

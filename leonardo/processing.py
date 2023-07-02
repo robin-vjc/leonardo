@@ -10,6 +10,7 @@ from diffusers import StableDiffusionImg2ImgPipeline
 
 LOADED_PIPELINES = {}  # we persist pipes for the duration of the application as loading them is expensive
 THIS_PATH = Path(os.path.dirname(os.path.realpath(__file__)))
+PROJECT_PATH = THIS_PATH / ".."
 
 
 def get_pipeline(model_path: str, low_memory: bool = False) -> StableDiffusionImg2ImgPipeline:

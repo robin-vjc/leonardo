@@ -17,6 +17,7 @@ def process_folder(
     output_width: int = 128,
     strength: float = 0.2,
     guidance_scale: float = 1.5,
+    low_memory: bool = False,
 ):
     images_files = os.listdir(PROJECT_PATH / input_path)
     config = get_config()
@@ -24,7 +25,7 @@ def process_folder(
     for file_name in images_files[:2]:
         # random pipeline
         model = random.choice(config["models"])
-        pipe = get_pipeline(model)
+        pipe = get_pipeline(model, low_memory=low_memory)
 
         # load image
         image = load_image(image_path=PROJECT_PATH / input_path / file_name, width=output_width)

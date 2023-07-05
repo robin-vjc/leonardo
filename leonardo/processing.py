@@ -12,6 +12,11 @@ LOADED_PIPELINES = {}
 
 
 def get_pipeline(model_path: str, low_memory: bool = False) -> StableDiffusionImg2ImgPipeline:
+    """
+    Retrieves a HuggingFace to perform img2img processing. Keeps models in RAM once loaded, as the loading operation is expensive.
+    :param model_path: path to the model; Example: "stabilityai/stable-diffusion-2-1"
+    :param low_memory: set to true to reduce memory consumption, at the cost of decreasing inference speed by 50%
+    """
     if model_path in LOADED_PIPELINES:
         return LOADED_PIPELINES[model_path]
 

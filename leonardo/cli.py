@@ -21,6 +21,17 @@ def process_folder(
     guidance_scale: float = 1.5,
     low_memory: bool = False,
 ):
+    """
+    Run a pipeline that processes images in a given folder using a random img2img stable diffusion model.
+    :param input_path: folder containing the input images to be processed
+    :param output_path: folder where the processed images will be stored
+    :param prompt: prompt to use to perform img2img processing
+    :param output_width: output image width in pixels; the larger, the longer processing will take
+    :param strength: strength parameter for the Huggingface img2img inference pipeline
+    :param guidance_scale: guidance parameter for the Huggingface img2img inference pipeline
+    :param low_memory: if set to true, will move models out of the GPU upon processing completion; saves GPU memory but results in a ~50% drop in inference speed
+    :return: None
+    """
     images_files = os.listdir(PROJECT_PATH / input_path)
     model_assignments = assign_random_model_to_images(images_files)
 

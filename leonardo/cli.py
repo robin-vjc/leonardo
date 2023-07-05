@@ -1,11 +1,12 @@
+import gc
 import os
 from pathlib import Path
 
 import torch
 import typer
 
-from leonardo.processing import PROJECT_PATH, get_pipeline, load_image
-from leonardo.utils import assign_random_model_to_images
+from leonardo.processing import Img2ImgModel, CsvFileLogger
+from leonardo.utils import assign_random_model_to_images, load_image, PROJECT_PATH
 
 app = typer.Typer()
 
@@ -23,8 +24,10 @@ def process_folder(
     images_files = os.listdir(PROJECT_PATH / input_path)
     model_assignments = assign_random_model_to_images(images_files)
 
-    for model, images_files in model_assignments.items():
-        pipe = get_pipeline(model, low_memory=low_memory)
+    for model_path, images_files in model_assignments.items():
+        pipe = Img2ImgModel(model_path, low_memory=low_memory)
+        file_logger = CsvFileLogger(output_file=PROJECT_PATH / "data" / "results.csv")
+        pipe.register(file_logger)
 
         for file_name in images_files[:2]:
             # load image
@@ -42,8 +45,9 @@ def process_folder(
             # store result
             output_image.save(PROJECT_PATH / output_path / file_name)
 
-        # clear GPU after finishing with model
+        # clear GPU cache after finishing with a model
         del pipe
+        gc.collect()
         torch.cuda.empty_cache()
 
 

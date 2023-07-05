@@ -1,15 +1,14 @@
-import os
-from pathlib import Path
+import csv
+import datetime
+import time
 from typing import Dict
 
+import psutil
 import torch
-import yaml
 from diffusers import StableDiffusionImg2ImgPipeline
-from PIL import Image
 
-LOADED_PIPELINES = {}  # we persist pipes for the duration of the application as loading them is expensive
-THIS_PATH = Path(os.path.dirname(os.path.realpath(__file__)))
-PROJECT_PATH = THIS_PATH / ".."
+# we persist pipes for the duration of the application as loading them is expensive
+LOADED_PIPELINES = {}
 
 
 def get_pipeline(model_path: str, low_memory: bool = False) -> StableDiffusionImg2ImgPipeline:
@@ -18,14 +17,10 @@ def get_pipeline(model_path: str, low_memory: bool = False) -> StableDiffusionIm
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = torch.float16 if device == "cuda" else None
-    config = get_config()
-    # hf_token = config["hf_token"]
-    # assert hf_token != "<INSERT_TOKEN_HERE>", "Edit the config.yaml file `hf_token` with a valid Huggingface token"
 
     pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
         model_path,
         torch_dtype=dtype,
-        # use_auth_token=hf_token,
         safety_checker=None,  # sometimes erroneously detects NSFW content when working in low resolution
         requires_safety_checker=False,
     )
@@ -39,17 +34,62 @@ def get_pipeline(model_path: str, low_memory: bool = False) -> StableDiffusionIm
     return pipe
 
 
-def get_config() -> Dict:
-    with open(THIS_PATH / ".." / "config.yaml", "r") as config_file:
-        config = yaml.safe_load(config_file)
-    return config
+class Img2ImgModel:
+    """
+    Wrapper for HuggingFace pipelines that is observable. Observability facilitates things like performance logging.
+    """
+    def __init__(self, model_path: str, low_memory: bool = False):
+        self.model_path = model_path
+        self.pipe = get_pipeline(model_path=model_path, low_memory=low_memory)
+        self._observers = []
+
+    def __call__(self, *args, **kwargs):
+        self._notify_observers({
+            'name': 'pipeline called',
+            'args': args,
+            'kwargs': kwargs
+        })
+
+        if torch.cuda.is_available():
+            torch.cuda.reset_peak_memory_stats()
+
+        start_time = time.time()
+        result = self.pipe(*args, **kwargs)
+        end_time = time.time()
+        gb_factor = 1_000_000_000
+
+        self._notify_observers({
+            'name': 'pipeline finished',
+            'prompt': kwargs['prompt'],
+            'strength': kwargs['strength'],
+            'guidance_scale': kwargs['guidance_scale'],
+            'model_path': self.model_path,
+            'date': datetime.datetime.now(),
+            'duration_in_sec': f"{end_time - start_time:.2f}",
+            'gpu_memory_allocated_in_gb': f"{torch.cuda.memory_allocated()/gb_factor:.2f}" if torch.cuda.is_available() else None,
+            'gpu_max_memory_allocated_in_gb': f"{torch.cuda.max_memory_allocated()/gb_factor:.2f}" if torch.cuda.is_available() else None,
+            'ram_usage_in_gb': f"{psutil.virtual_memory()[3]/gb_factor:.2f}"
+        })
+
+        return result
+
+    def register(self, observer):
+        self._observers.append(observer)
+
+    def _notify_observers(self, event: Dict):
+        for observer in self._observers:
+            observer.update(event)
 
 
-def load_image(image_path: Path, width: int = 512) -> Image:
-    image = Image.open(image_path).convert("RGB")
+class CsvFileLogger:
+    """
+    An observer that stores run information in a csv file upon pipeline completion
+    """
+    def __init__(self, output_file: str):
+        self.output_file = output_file
 
-    init_width, init_height = image.size
-    scaling_factor = init_width // width
-    height = init_height // scaling_factor
-
-    return image.resize((width, height))
+    def update(self, event: Dict):
+        if event['name'] == 'pipeline finished':
+            with open(self.output_file, 'a+') as f:
+                writer = csv.writer(f)
+                writer.writerow(event.values())

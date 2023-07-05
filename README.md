@@ -25,7 +25,7 @@ model is selected and used to produce the output image.
 **Further notes:**
 * The `setup.py`/`requirements.txt` files are the only infrastructure pieces (no dockerization) 
 * In a production setting, we would not be loading all models in a single python process; rather, we'd spawn separate containers, one with only one model each, sitting behind a REST API (e.g. Flask or MLFlow serve). Processing images would send a request to a separate endpoint each time. Containers would be scaled depending on load.
-* It is possible to perform batch processing by supplying a list of images and prompts to `pipe()` instead of individual ones. 
+* It is possible to perform batch processing by supplying a list of images and prompts to `pipe()` instead of individual ones. However, the input images would have to be of the same dimensions for batching to be possible. Since the aspect ratio of the input images provided varies, we wouldn't be able to batch much work in this case. It is something one would want to do in production to ensure GPU power is effectively utilized.
 
 # Usage
 
@@ -34,12 +34,6 @@ Clone repo and install app as the editable (`-e`) `leonardo` package:
 git clone git@github.com:robin-vjc/leonardo.git
 cd leonardo
 pip install -e .
-```
-
-Update `config.yaml` with the Huggingface token
-```bash
-cp config.template.yaml config.yaml
-nano config.yaml
 ```
 
 To run the pipeline on the set of images in `data/images/`
@@ -76,8 +70,8 @@ Options:
 - [x] store images in data/
 - [x] make repo pip-installable
 - [x] check on colab GPU processing works correctly
-- [ ] can eliminate hf token?
+- [ ] only clear gpu if device is in fact gpu
 - [ ] track memory/cpu usage
-- [ ] refactor so we do a randomized chunk of images with one model, then process the other chunks
+- [x] refactor so we do a randomized chunk of images with one model, then process the other chunks
 - [ ] clean up docstrings everywhere
-- [ ] update README installation / usage
+- [x] update README installation / usage

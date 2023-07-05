@@ -1,10 +1,11 @@
 import os
-import random
 from pathlib import Path
 
+import torch
 import typer
 
-from leonardo.processing import PROJECT_PATH, get_config, get_pipeline, load_image
+from leonardo.processing import PROJECT_PATH, get_pipeline, load_image
+from leonardo.utils import assign_random_model_to_images
 
 app = typer.Typer()
 
@@ -20,26 +21,30 @@ def process_folder(
     low_memory: bool = False,
 ):
     images_files = os.listdir(PROJECT_PATH / input_path)
-    config = get_config()
+    model_assignments = assign_random_model_to_images(images_files)
 
-    for file_name in images_files[:2]:
-        # random pipeline
-        model = random.choice(config["models"])
+    for model, images_files in model_assignments.items():
         pipe = get_pipeline(model, low_memory=low_memory)
 
-        # load image
-        image = load_image(image_path=PROJECT_PATH / input_path / file_name, width=output_width)
+        for file_name in images_files[:2]:
+            # load image
+            image = load_image(image_path=PROJECT_PATH / input_path / file_name, width=output_width)
 
-        # perform processing
-        output_image = pipe(
-            prompt=prompt,
-            image=image,
-            strength=strength,
-            guidance_scale=guidance_scale
-        ).images[0]
+            # perform processing
+            with torch.no_grad():
+                output_image = pipe(
+                    prompt=prompt,
+                    image=image,
+                    strength=strength,
+                    guidance_scale=guidance_scale
+                ).images[0]
 
-        # store result
-        output_image.save(PROJECT_PATH / output_path / file_name)
+            # store result
+            output_image.save(PROJECT_PATH / output_path / file_name)
+
+        # clear GPU after finishing with model
+        del pipe
+        torch.cuda.empty_cache()
 
 
 if __name__ == "__main__":

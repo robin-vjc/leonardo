@@ -19,18 +19,18 @@ def get_pipeline(model_path: str, low_memory: bool = False) -> StableDiffusionIm
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = torch.float16 if device == "cuda" else None
     config = get_config()
-    hf_token = config["hf_token"]
-    assert hf_token != "<INSERT_TOKEN_HERE>", "Edit the config.yaml file `hf_token` with a valid Huggingface token"
+    # hf_token = config["hf_token"]
+    # assert hf_token != "<INSERT_TOKEN_HERE>", "Edit the config.yaml file `hf_token` with a valid Huggingface token"
 
     pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
         model_path,
         torch_dtype=dtype,
-        use_auth_token=hf_token,
+        # use_auth_token=hf_token,
         safety_checker=None,  # sometimes erroneously detects NSFW content when working in low resolution
         requires_safety_checker=False,
     )
 
-    if low_memory and device == "cuda":
+    if low_memory:
         pipe.enable_sequential_cpu_offload()
 
     pipe = pipe.to(device)

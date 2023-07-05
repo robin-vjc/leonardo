@@ -1,0 +1,18 @@
+name,prompt,strength,guidance_scale,model_path,date,duration_in_sec,gpu_memory_allocated_in_gb,gpu_max_memory_allocated_in_gb,ram_usage_in_gb
+pipeline finished,"A image banner design of tshirt, in futuristic style, trending on artstation",0.75,7.5,runwayml/stable-diffusion-v1-5,2023-07-05 11:12:04.589559,14.38,2.17,3.13,4.42
+pipeline finished,"game cafe good mood with happy people paper art style, in futuristic style, trending on artstation",0.75,7.5,runwayml/stable-diffusion-v1-5,2023-07-05 11:12:11.465432,6.50,2.17,2.84,4.45
+pipeline finished,"cybernatic character rusty metalic hunter armor, in futuristic style, trending on artstation",0.75,7.5,runwayml/stable-diffusion-v1-5,2023-07-05 11:12:27.371269,15.70,2.17,3.66,4.45
+pipeline finished,"sticker cartoon cute fox white background, in futuristic style, trending on artstation",0.75,7.5,runwayml/stable-diffusion-v1-5,2023-07-05 11:12:37.547295,10.08,2.17,3.21,4.45
+pipeline finished,"A cute Kawaii tiny hyper realistic baby jaguar, in futuristic style, trending on artstation",0.75,7.5,CompVis/stable-diffusion-v1-4,2023-07-05 11:13:34.199128,11.27,4.34,5.46,7.47
+pipeline finished,"lightning strikes abstract high quality, in futuristic style, trending on artstation",0.75,7.5,CompVis/stable-diffusion-v1-4,2023-07-05 11:13:44.699084,10.42,4.34,5.38,7.47
+pipeline finished,"Terrifying Halloween house at the dead of night, in futuristic style, trending on artstation",0.75,7.5,CompVis/stable-diffusion-v1-4,2023-07-05 11:13:55.383685,10.58,4.34,5.38,7.48
+pipeline finished,"DD cybernatic character rusty metalic, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2-1,2023-07-05 11:15:18.118984,11.22,6.94,8.22,9.23
+pipeline finished,"A cute Kawaii tiny hyper realistic baby jaguar, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2-1,2023-07-05 11:15:28.309572,10.07,6.94,8.06,9.21
+pipeline finished,"beautiful northern lights vector, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2-1,2023-07-05 11:15:37.846620,9.47,6.94,7.98,9.22
+pipeline finished,"whimsical detailed close up portrait victorian, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2-1,2023-07-05 11:15:47.305786,9.38,6.94,7.98,9.22
+pipeline finished,"isometric china town cutaway box traditional night, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2-1,2023-07-05 11:15:55.872863,8.22,6.94,7.84,9.23
+pipeline finished,"jrpg complete portrait of a space golden, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2-1,2023-07-05 11:16:05.049829,9.10,6.94,7.98,9.23
+pipeline finished,"side view of a samurai cat with a flat design Artwork of, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2-1,2023-07-05 11:16:10.773050,5.46,6.94,7.58,9.23
+pipeline finished,"isometric cyberpunk bedroom cutaway box futuristic, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2,2023-07-05 11:24:14.787674,13.63,9.54,11.03,10.60
+pipeline finished,"back facing camera soldier holding a shiny katana, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2,2023-07-05 11:24:24.137262,9.27,9.54,10.58,10.60
+pipeline finished,"Watercolor Magical neon watercolor latte art intricate, in futuristic style, trending on artstation",0.75,7.5,stabilityai/stable-diffusion-2,2023-07-05 11:24:32.723355,8.52,9.54,10.50,10.60

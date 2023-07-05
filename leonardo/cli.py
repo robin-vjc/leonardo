@@ -40,7 +40,7 @@ def process_folder(
         file_logger = CsvFileLogger(output_file=PROJECT_PATH / "data" / "results.csv")
         pipe.register(file_logger)
 
-        for file_name in images_files[:2]:
+        for file_name in images_files:
             # load image
             image = load_image(image_path=PROJECT_PATH / input_path / file_name, width=output_width)
 
